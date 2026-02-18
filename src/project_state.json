@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 5,
+  "summary": "Build “7 Bucks” payment app: admin dashboard captures ContiPay API tokens (stored encrypted), backend (Motoko canister) securely performs ContiPay acquire/disburse flows to convert card charge to EcoCash FCA USD payout, with a modern UI showing user savings vs ATM.",
+  "architectural_notes": [
+    "Store ContiPay API tokens encrypted; tokens entered by admin via dashboard and persisted in backend canister.",
+    "All ContiPay API calls should be executed server-side (most secure), not from the frontend.",
+    "PWA support requires a valid web app manifest, service worker registration, and correctly referenced icon assets (favicon/app icons) served from stable URLs."
+  ],
+  "known_issues": [
+    "7 Bucks logo image is failing to load (broken image icon) on the login page; likely missing/incorrect asset path or build export issue."
+  ],
+  "isFixRequest": true,
+  "existing_features": [
+    {
+      "id": "feature-implement-internet-identity-sign-in-and-an-admin-only-area-where-an-authenticated-admin-can-enter-update-and-save-contipay-credentials-api-key-secret-and-any-required-merchant-identifiers-fields-for-later-use",
+      "title": "Implement Internet Identity sign-in and an Admin-only area where an authenticated admin can enter, update, and save ContiPay credentials (API key, secret, and any required merchant identifiers/fields) for later use.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-most-secure-architecture-all-contipay-api-calls-must-be-performed-by-the-motoko-backend-the-frontend-must-never-call-contipay-directly-or-handle-raw-contipay-secrets",
+      "title": "Ensure the most secure architecture: all ContiPay API calls must be performed by the Motoko backend (the frontend must never call ContiPay directly or handle raw ContiPay secrets).",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-the-end-user-payment-flow-ui-single-page-or-multi-step-wizard-to-collect-student-card-number-cvv-expiry-parent-ecocash-phone-identifier-and-amount-in-usd-the-ui-must-display-the-savings-message-e-g-you-save-21-compared-to-the-atm-and-show-success-failure-status-for-the-transaction",
+      "title": "Create the end-user payment flow UI (single page or multi-step wizard) to collect: student card number, CVV, expiry; parent EcoCash phone/identifier; and amount in USD. The UI must display the savings message (e.g., “You save $21 compared to the ATM”) and show success/failure status for the transaction.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-minimal-transaction-log-ledger-in-the-backend-for-operational-visibility-timestamps-amount-usd-total-to-charge-status-and-returned-references-and-a-simple-admin-view-to-list-recent-transactions-no-sensitive-card-data-stored-or-displayed",
+      "title": "Add a minimal transaction log/ledger in the backend for operational visibility (timestamps, amount_usd, total_to_charge, status, and returned references), and a simple Admin view to list recent transactions (no sensitive card data stored or displayed).",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-brand-the-app-as-7-bucks-and-incorporate-the-user-provided-logo-throughout-the-ui-header-login-admin-payment-screens-including-generating-appropriate-app-icon-favicon-assets-derived-from-the-uploaded-logo-image",
+      "title": "Brand the app as “7 Bucks” and incorporate the user-provided logo throughout the UI (header/login/admin/payment screens), including generating appropriate app icon/favicon assets derived from the uploaded logo image.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-cohesive-modern-visual-theme-consistent-with-the-7-bucks-brand-teal-gold-tones-from-the-logo-strong-typography-clear-step-by-step-layout-and-enforce-the-style-consistently-across-all-screens",
+      "title": "Apply a cohesive, modern visual theme consistent with the “7 Bucks” brand (teal + gold tones from the logo, strong typography, clear step-by-step layout), and enforce the style consistently across all screens.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-broken-7-bucks-logo-image-so-it-reliably-loads-on-the-login-screen-and-in-the-authenticated-header-with-a-graceful-fallback-if-the-image-asset-cannot-be-loaded",
+      "title": "Fix the broken 7 Bucks logo image so it reliably loads on the login screen and in the authenticated header, with a graceful fallback if the image asset cannot be loaded.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-pwa-install-experience-ensure-the-app-is-properly-configured-as-a-pwa-web-app-manifest-icons-service-worker-and-provide-an-in-app-install-prompt-button-with-english-user-facing-text-e-g-install-app-that-appears-only-when-installation-is-supported",
+      "title": "Add a PWA install experience: ensure the app is properly configured as a PWA (web app manifest + icons + service worker) and provide an in-app install prompt/button with English user-facing text (e.g., \"Install app\") that appears only when installation is supported.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Admin dashboard to input/update ContiPay API tokens and persist them encrypted",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Backend performs secure ContiPay payment flow: acquire card funds then disburse to EcoCash FCA USD",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "User payment UI flow (single or multi-screen) to collect student card details and parent EcoCash number and show result/status",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Display savings message vs ATM (e.g., “You save $21 compared to the ATM”)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Branding: set app name to “7 Bucks” and use provided logo",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Encrypt ContiPay credentials before persisting them in the Motoko canister, and ensure they are never returned in plaintext via any query/update method.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Implement backend payment orchestration methods that (once ContiPay endpoints/specs are provided) perform: (1) acquire/charge funds for amount_usd * 1.07 in USD; then (2) disburse/payout amount_usd to EcoCash FCA USD. Until exact ContiPay REST endpoints/fields are provided, the backend must still “function” by rejecting with a clear actionable error explaining what configuration/spec is missing (endpoints and required fields).",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Add PWA install prompt (e.g., \"Install app\") on supported browsers and ensure PWA is properly configured (manifest + icons + service worker)",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "7 Bucks",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

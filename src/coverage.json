@@ -1,0 +1,79 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-17T22:45:47.716Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 2,
+    "implemented": 2,
+    "items": [
+      {
+        "id": "REQ-10",
+        "summary": "Add a PWA install experience: ensure the app is properly configured as a PWA (web app manifest + icons + service worker) and provide an in-app install prompt/button with English user-facing text (e.g., \"Install app\") that appears only when installation is supported.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/public/manifest.webmanifest",
+          "frontend/index.html",
+          "frontend/public/sw.js",
+          "frontend/src/pwa/registerServiceWorker.ts",
+          "frontend/src/hooks/usePwaInstallPrompt.ts",
+          "frontend/src/components/PwaInstallButton.tsx",
+          "frontend/src/features/auth/LoginScreen.tsx",
+          "frontend/src/components/BrandHeader.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/public/manifest.webmanifest",
+          "frontend/index.html",
+          "frontend/public/sw.js",
+          "frontend/src/pwa/registerServiceWorker.ts",
+          "frontend/src/hooks/usePwaInstallPrompt.ts",
+          "frontend/src/components/PwaInstallButton.tsx",
+          "frontend/src/features/auth/LoginScreen.tsx",
+          "frontend/src/components/BrandHeader.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-9",
+        "summary": "Fix the broken 7 Bucks logo image so it reliably loads on the login screen and in the authenticated header, with a graceful fallback if the image asset cannot be loaded.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/public/assets/brand/seven-bucks-logo.png",
+          "frontend/src/components/BrandLogo.tsx",
+          "frontend/src/features/auth/LoginScreen.tsx",
+          "frontend/src/components/BrandHeader.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/BrandLogo.tsx",
+          "frontend/src/features/auth/LoginScreen.tsx",
+          "frontend/src/components/BrandHeader.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "build-template/README.md",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/index.html",
+    "frontend/public/manifest.webmanifest",
+    "frontend/public/sw.js",
+    "frontend/src/App.tsx",
+    "frontend/src/components/BrandHeader.tsx",
+    "frontend/src/components/BrandLogo.tsx",
+    "frontend/src/components/PwaInstallButton.tsx",
+    "frontend/src/features/auth/LoginScreen.tsx",
+    "frontend/src/hooks/usePwaInstallPrompt.ts",
+    "frontend/src/pwa/registerServiceWorker.ts",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-17T22:45:47.713Z",
+  "summary": "Diff implements both requested items: a reusable BrandLogo component using a static production asset path with onError fallback, used on login and authenticated header; and a PWA install experience including manifest + icons references, service worker + registration, and an install button shown only when install is supported, available on both login and authenticated header.",
+  "missing_requirements": [],
+  "hallucinated_features": [],
+  "confidence": 0.84,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/index.html",
+    "frontend/public/manifest.webmanifest",
+    "frontend/public/sw.js",
+    "frontend/src/App.tsx",
+    "frontend/src/components/BrandHeader.tsx",
+    "frontend/src/components/BrandLogo.tsx",
+    "frontend/src/components/PwaInstallButton.tsx",
+    "frontend/src/features/auth/LoginScreen.tsx",
+    "frontend/src/hooks/usePwaInstallPrompt.ts",
+    "frontend/src/pwa/registerServiceWorker.ts",
+    "project_state.json"
+  ]
+}

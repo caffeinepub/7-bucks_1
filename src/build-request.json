@@ -1,0 +1,60 @@
+{
+  "kind": "build_request",
+  "title": "Fix missing 7 Bucks logo and add PWA install prompt",
+  "projectName": "7 Bucks",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-9",
+      "text": "Fix the broken 7 Bucks logo image so it reliably loads on the login screen and in the authenticated header, with a graceful fallback if the image asset cannot be loaded.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "I told you i cant see the logo and I won't proceed without it."
+        ]
+      },
+      "acceptanceCriteria": [
+        "On the login screen, the logo renders (no broken image icon) and uses the correct static asset path that is included in the production build.",
+        "In the authenticated header, the logo renders (no broken image icon) and uses the same correct static asset path included in the production build.",
+        "If the logo image fails to load for any reason, the UI shows a non-broken fallback (e.g., a styled '7 Bucks' wordmark block) instead of the browser broken-image placeholder.",
+        "No backend changes are required for the logo to display."
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Add a PWA install experience: ensure the app is properly configured as a PWA (web app manifest + icons + service worker) and provide an in-app install prompt/button with English user-facing text (e.g., \"Install app\") that appears only when installation is supported.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "Give the install pwa prompt"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The app includes a valid web app manifest linked from the HTML entry point, with correct name/short_name, start_url, display mode, theme/background colors, and icon entries that match existing generated icon filenames.",
+        "A service worker is registered so the app is recognized as installable by supported browsers (where applicable in the build environment).",
+        "An install UI control with English text (e.g., \"Install app\") is shown only when the browser exposes an install prompt event / install capability; it is hidden otherwise (including on unsupported platforms such as iOS Safari).",
+        "Clicking the install control triggers the browser’s native install prompt when available, and the UI updates appropriately after the user accepts or dismisses the prompt.",
+        "The install prompt is available from the login screen (unauthenticated) and remains accessible in authenticated views (e.g., in the header or a consistent location)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not edit files in frontend immutable paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui.",
+    "Keep the backend as a single Motoko actor; no backend changes are required for these requests."
+  ],
+  "nonGoals": [
+    "Implementing push notifications or real-time messaging.",
+    "Integrating any third-party analytics or external PWA services.",
+    "Changing authentication (Internet Identity) behavior beyond what is needed to display the install UI and logo correctly."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

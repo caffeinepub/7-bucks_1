@@ -1,0 +1,23 @@
+{
+  "frontend/src/App.tsx": "Main application component with authentication flow, user profile setup, role-based routing, and service worker registration for PWA support.",
+  "frontend/src/components/AppShell.tsx": "Shared layout wrapper providing consistent header, main content container, and footer with Caffeine attribution across all authenticated views.",
+  "frontend/src/components/BrandHeader.tsx": "Navigation header with reliable logo component, role-based menu for admin users, PWA install button, and logout functionality.",
+  "frontend/src/features/auth/LoginScreen.tsx": "Branded login screen with reliable logo component, Internet Identity authentication, value proposition messaging, and PWA install button.",
+  "frontend/src/features/auth/ProfileSetupModal.tsx": "Modal dialog that prompts new users to enter their name on first login, with validation and error handling.",
+  "frontend/src/features/payments/PaymentWizardPage.tsx": "Multi-step payment wizard collecting card details, EcoCash number, and amount with validation, savings callout, confirmation, and result display.",
+  "frontend/src/features/payments/PaymentResultPanel.tsx": "Result screen showing payment success/failure status with transaction details and option to start a new payment, using enum comparison instead of discriminated union.",
+  "frontend/src/features/payments/validation.ts": "Client-side validation functions for card number, CVV, expiry date, EcoCash phone number, and payment amount.",
+  "frontend/src/features/payments/usePaymentOrchestration.ts": "React Query hook that orchestrates payment flow by calling backend actor with card and EcoCash details, managing loading and result states.",
+  "frontend/src/features/admin/AdminCredentialsPage.tsx": "Admin-only page for securely entering and saving ContiPay API credentials (key, secret, merchant ID) with encryption confirmation.",
+  "frontend/src/features/admin/AdminTransactionsPage.tsx": "Admin-only transaction history view displaying all payments with status badges, amounts, timestamps, and references in a sortable table, using enum comparison for status checks.",
+  "frontend/src/hooks/useQueries.ts": "Custom React Query hook for fetching caller user profile with proper actor dependency and loading state management.",
+  "frontend/src/index.css": "Global styles defining teal+gold OKLCH color system for light and dark modes with accessible contrast ratios and semantic token names.",
+  "frontend/tailwind.config.js": "Tailwind configuration extending theme with teal/gold color palettes, custom fonts (Inter, Poppins), and brand-specific design tokens.",
+  "frontend/index.html": "HTML entry point with PWA manifest link, theme color meta tag, and proper favicon/app icon references.",
+  "frontend/src/components/BrandLogo.tsx": "Reusable logo component that displays the 7 Bucks logo from the correct static asset path with graceful fallback to a styled text wordmark if the image fails to load.",
+  "frontend/src/hooks/usePwaInstallPrompt.ts": "React hook that manages PWA install prompt state by listening for beforeinstallprompt events, exposing installability status, and triggering the native browser install prompt.",
+  "frontend/src/components/PwaInstallButton.tsx": "Install button component that renders only when PWA installation is supported and available, triggering the native install prompt on click.",
+  "frontend/src/pwa/registerServiceWorker.ts": "Helper function to register the service worker for PWA functionality with feature detection.",
+  "frontend/public/sw.js": "Minimal service worker implementing basic caching strategy for PWA installability and offline support.",
+  "frontend/public/manifest.webmanifest": "PWA manifest defining app metadata, display mode, theme colors, and icon references for installability."
+}

@@ -1,0 +1,23 @@
+{
+  "name": "7 Bucks - Send Money to EcoCash",
+  "short_name": "7 Bucks",
+  "description": "Send money from card to EcoCash instantly. Save up to $21 compared to ATM fees.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0d9488",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/generated/seven-bucks-favicon.dim_64x64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/generated/seven-bucks-app-icon.dim_512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
