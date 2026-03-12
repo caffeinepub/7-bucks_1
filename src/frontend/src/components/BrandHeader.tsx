@@ -1,24 +1,30 @@
-import { useInternetIdentity } from '../hooks/useInternetIdentity';
-import { useQueryClient } from '@tanstack/react-query';
-import { Button } from './ui/button';
-import { LogOut, Settings, Receipt, Home } from 'lucide-react';
+import { useQueryClient } from "@tanstack/react-query";
+import { Home, LogOut, Receipt, Settings } from "lucide-react";
+import { useInternetIdentity } from "../hooks/useInternetIdentity";
+import BrandLogo from "./BrandLogo";
+import PwaInstallButton from "./PwaInstallButton";
+import { Button } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from './ui/dropdown-menu';
-import BrandLogo from './BrandLogo';
-import PwaInstallButton from './PwaInstallButton';
+} from "./ui/dropdown-menu";
 
 interface BrandHeaderProps {
   isAdmin?: boolean;
   currentView?: string;
-  onViewChange?: (view: 'payment' | 'admin-credentials' | 'admin-transactions') => void;
+  onViewChange?: (
+    view: "payment" | "admin-credentials" | "admin-transactions" | "terms",
+  ) => void;
 }
 
-export default function BrandHeader({ isAdmin, currentView, onViewChange }: BrandHeaderProps) {
+export default function BrandHeader({
+  isAdmin,
+  currentView,
+  onViewChange,
+}: BrandHeaderProps) {
   const { clear, identity } = useInternetIdentity();
   const queryClient = useQueryClient();
 
@@ -42,25 +48,29 @@ export default function BrandHeader({ isAdmin, currentView, onViewChange }: Bran
             {isAdmin && onViewChange && (
               <nav className="hidden md:flex items-center gap-2">
                 <Button
-                  variant={currentView === 'payment' ? 'default' : 'ghost'}
+                  variant={currentView === "payment" ? "default" : "ghost"}
                   size="sm"
-                  onClick={() => onViewChange('payment')}
+                  onClick={() => onViewChange("payment")}
                 >
                   <Home className="w-4 h-4 mr-2" />
                   Payment
                 </Button>
                 <Button
-                  variant={currentView === 'admin-credentials' ? 'default' : 'ghost'}
+                  variant={
+                    currentView === "admin-credentials" ? "default" : "ghost"
+                  }
                   size="sm"
-                  onClick={() => onViewChange('admin-credentials')}
+                  onClick={() => onViewChange("admin-credentials")}
                 >
                   <Settings className="w-4 h-4 mr-2" />
                   API Settings
                 </Button>
                 <Button
-                  variant={currentView === 'admin-transactions' ? 'default' : 'ghost'}
+                  variant={
+                    currentView === "admin-transactions" ? "default" : "ghost"
+                  }
                   size="sm"
-                  onClick={() => onViewChange('admin-transactions')}
+                  onClick={() => onViewChange("admin-transactions")}
                 >
                   <Receipt className="w-4 h-4 mr-2" />
                   Transactions
@@ -79,15 +89,19 @@ export default function BrandHeader({ isAdmin, currentView, onViewChange }: Bran
               <DropdownMenuContent align="end" className="w-48">
                 {isAdmin && onViewChange && (
                   <>
-                    <DropdownMenuItem onClick={() => onViewChange('payment')}>
+                    <DropdownMenuItem onClick={() => onViewChange("payment")}>
                       <Home className="w-4 h-4 mr-2" />
                       Payment
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => onViewChange('admin-credentials')}>
+                    <DropdownMenuItem
+                      onClick={() => onViewChange("admin-credentials")}
+                    >
                       <Settings className="w-4 h-4 mr-2" />
                       API Settings
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => onViewChange('admin-transactions')}>
+                    <DropdownMenuItem
+                      onClick={() => onViewChange("admin-transactions")}
+                    >
                       <Receipt className="w-4 h-4 mr-2" />
                       Transactions
                     </DropdownMenuItem>

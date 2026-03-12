@@ -1,17 +1,20 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 interface BrandLogoProps {
   className?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
-export default function BrandLogo({ className = '', size = 'md' }: BrandLogoProps) {
+export default function BrandLogo({
+  className = "",
+  size = "md",
+}: BrandLogoProps) {
   const [imageError, setImageError] = useState(false);
 
   const sizeClasses = {
-    sm: 'h-8',
-    md: 'h-12',
-    lg: 'h-24',
+    sm: "h-8",
+    md: "h-12",
+    lg: "h-24",
   };
 
   if (imageError) {

@@ -6,6 +6,7 @@ import Runtime "mo:core/Runtime";
 import Order "mo:core/Order";
 import Int "mo:core/Int";
 import Principal "mo:core/Principal";
+import Nat "mo:core/Nat";
 import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
 
@@ -87,4 +88,20 @@ actor {
 
     transactionStore.values().toArray().sort();
   };
+
+  let fixedFee = 100 : Nat; // $1.00
+  let variableFeePercentage = 6 : Nat; // 6%
+
+  public query ({ caller }) func calculateTotalCost(amountUsd : Nat) : async Nat {
+    if (not AccessControl.hasPermission(accessControlState, caller, #user)) {
+      Runtime.trap("Unauthorized: Only users can calculate transaction costs");
+    };
+    calculateTotalCostInternal(amountUsd);
+  };
+
+  func calculateTotalCostInternal(amountUsd : Nat) : Nat {
+    let variableFee = (amountUsd * variableFeePercentage) / 100;
+    amountUsd + fixedFee + variableFee;
+  };
 };
+

@@ -1,19 +1,40 @@
-import { useQuery } from '@tanstack/react-query';
-import { useActor } from '../../hooks/useActor';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
-import { Badge } from '../../components/ui/badge';
-import { Alert, AlertDescription } from '../../components/ui/alert';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table';
-import { AlertCircle, Loader2, Receipt } from 'lucide-react';
-import { Transaction, Variant_pending_success_failed } from '../../backend';
+import { useQuery } from "@tanstack/react-query";
+import { AlertCircle, Loader2, Receipt } from "lucide-react";
+import {
+  type Transaction,
+  Variant_pending_success_failed,
+} from "../../backend";
+import { Alert, AlertDescription } from "../../components/ui/alert";
+import { Badge } from "../../components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../../components/ui/table";
+import { useActor } from "../../hooks/useActor";
 
 export default function AdminTransactionsPage() {
   const { actor, isFetching: actorFetching } = useActor();
 
-  const { data: transactions, isLoading, isError, error } = useQuery<Transaction[]>({
-    queryKey: ['allTransactions'],
+  const {
+    data: transactions,
+    isLoading,
+    isError,
+    error,
+  } = useQuery<Transaction[]>({
+    queryKey: ["allTransactions"],
     queryFn: async () => {
-      if (!actor) throw new Error('Actor not available');
+      if (!actor) throw new Error("Actor not available");
       return actor.getAllTransactions();
     },
     enabled: !!actor && !actorFetching,
@@ -22,9 +43,17 @@ export default function AdminTransactionsPage() {
   const getStatusBadge = (status: Variant_pending_success_failed) => {
     switch (status) {
       case Variant_pending_success_failed.success:
-        return <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100">Success</Badge>;
+        return (
+          <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100">
+            Success
+          </Badge>
+        );
       case Variant_pending_success_failed.pending:
-        return <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100">Pending</Badge>;
+        return (
+          <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100">
+            Pending
+          </Badge>
+        );
       case Variant_pending_success_failed.failed:
         return <Badge variant="destructive">Failed</Badge>;
       default:
@@ -53,7 +82,8 @@ export default function AdminTransactionsPage() {
             <CardTitle>Recent Transactions</CardTitle>
           </div>
           <CardDescription>
-            All transactions are listed below. Sensitive card data is never stored.
+            All transactions are listed below. Sensitive card data is never
+            stored.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -67,7 +97,9 @@ export default function AdminTransactionsPage() {
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
-                {error instanceof Error ? error.message : 'Failed to load transactions'}
+                {error instanceof Error
+                  ? error.message
+                  : "Failed to load transactions"}
               </AlertDescription>
             </Alert>
           )}
@@ -93,7 +125,7 @@ export default function AdminTransactionsPage() {
                 </TableHeader>
                 <TableBody>
                   {transactions.map((tx, idx) => (
-                    <TableRow key={idx}>
+                    <TableRow key={`tx-${String(tx.timestampNanos)}-${idx}`}>
                       <TableCell className="text-sm">
                         {formatDate(tx.timestampNanos)}
                       </TableCell>
@@ -105,7 +137,7 @@ export default function AdminTransactionsPage() {
                       </TableCell>
                       <TableCell>{getStatusBadge(tx.status)}</TableCell>
                       <TableCell className="font-mono text-xs">
-                        {tx.contiPayReference || '-'}
+                        {tx.contiPayReference || "-"}
                       </TableCell>
                     </TableRow>
                   ))}

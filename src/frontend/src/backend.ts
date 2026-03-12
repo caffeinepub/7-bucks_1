@@ -113,6 +113,7 @@ export enum Variant_pending_success_failed {
 export interface backendInterface {
     _initializeAccessControlWithSecret(userSecret: string): Promise<void>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
+    calculateTotalCost(amountUsd: bigint): Promise<bigint>;
     createOrUpdateApiCredentials(identifier: string, credentials: string, _updateexisting: boolean | null): Promise<void>;
     getAllTransactions(): Promise<Array<Transaction>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
@@ -150,6 +151,20 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.assignCallerUserRole(arg0, to_candid_UserRole_n1(this._uploadFile, this._downloadFile, arg1));
+            return result;
+        }
+    }
+    async calculateTotalCost(arg0: bigint): Promise<bigint> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.calculateTotalCost(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.calculateTotalCost(arg0);
             return result;
         }
     }

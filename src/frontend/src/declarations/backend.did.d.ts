@@ -27,6 +27,7 @@ export type UserRole = { 'admin' : null } |
 export interface _SERVICE {
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'calculateTotalCost' : ActorMethod<[bigint], bigint>,
   'createOrUpdateApiCredentials' : ActorMethod<
     [string, string, [] | [boolean]],
     undefined

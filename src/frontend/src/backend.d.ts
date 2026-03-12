@@ -30,6 +30,7 @@ export enum Variant_pending_success_failed {
 }
 export interface backendInterface {
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
+    calculateTotalCost(amountUsd: bigint): Promise<bigint>;
     createOrUpdateApiCredentials(identifier: string, credentials: string, _updateexisting: boolean | null): Promise<void>;
     getAllTransactions(): Promise<Array<Transaction>>;
     getCallerUserProfile(): Promise<UserProfile | null>;

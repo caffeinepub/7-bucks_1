@@ -30,6 +30,7 @@ export const UserProfile = IDL.Record({ 'name' : IDL.Text });
 export const idlService = IDL.Service({
   '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'calculateTotalCost' : IDL.Func([IDL.Nat], [IDL.Nat], ['query']),
   'createOrUpdateApiCredentials' : IDL.Func(
       [IDL.Text, IDL.Text, IDL.Opt(IDL.Bool)],
       [],
@@ -77,6 +78,7 @@ export const idlFactory = ({ IDL }) => {
   return IDL.Service({
     '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'calculateTotalCost' : IDL.Func([IDL.Nat], [IDL.Nat], ['query']),
     'createOrUpdateApiCredentials' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Opt(IDL.Bool)],
         [],

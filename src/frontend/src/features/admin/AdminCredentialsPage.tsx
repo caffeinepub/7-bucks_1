@@ -1,41 +1,58 @@
-import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useActor } from '../../hooks/useActor';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
-import { Input } from '../../components/ui/input';
-import { Label } from '../../components/ui/label';
-import { Button } from '../../components/ui/button';
-import { Alert, AlertDescription } from '../../components/ui/alert';
-import { Textarea } from '../../components/ui/textarea';
-import { AlertCircle, CheckCircle2, Loader2, Save, Shield } from 'lucide-react';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  AlertCircle,
+  Building2,
+  CheckCircle2,
+  Copy,
+  Eye,
+  EyeOff,
+  Key,
+  Loader2,
+  RefreshCw,
+  Shield,
+} from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Alert, AlertDescription } from "../../components/ui/alert";
+import { Button } from "../../components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
+import { Textarea } from "../../components/ui/textarea";
+import { useActor } from "../../hooks/useActor";
 
 export default function AdminCredentialsPage() {
   const { actor } = useActor();
   const queryClient = useQueryClient();
-  const [apiKey, setApiKey] = useState('');
-  const [apiSecret, setApiSecret] = useState('');
-  const [merchantId, setMerchantId] = useState('');
-  const [additionalConfig, setAdditionalConfig] = useState('');
+  const [apiKey, setApiKey] = useState("");
+  const [apiSecret, setApiSecret] = useState("");
+  const [sslCertificate, setSslCertificate] = useState("");
+  const [showApiSecret, setShowApiSecret] = useState(false);
 
   const saveMutation = useMutation({
     mutationFn: async () => {
-      if (!actor) throw new Error('Actor not available');
-      
+      if (!actor) throw new Error("Actor not available");
       const credentials = JSON.stringify({
         apiKey,
         apiSecret,
-        merchantId,
-        additionalConfig: additionalConfig || undefined,
+        sslCertificate,
       });
-      
-      await actor.createOrUpdateApiCredentials('contipay', credentials, true);
+      await actor.createOrUpdateApiCredentials("contipay", credentials, true);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['apiCredentials'] });
-      setApiKey('');
-      setApiSecret('');
-      setMerchantId('');
-      setAdditionalConfig('');
+      queryClient.invalidateQueries({ queryKey: ["apiCredentials"] });
+      toast.success("Configuration saved and encrypted successfully.");
+    },
+    onError: (err) => {
+      toast.error(
+        err instanceof Error ? err.message : "Failed to save configuration",
+      );
     },
   });
 
@@ -44,29 +61,72 @@ export default function AdminCredentialsPage() {
     saveMutation.mutate();
   };
 
+  const copyToClipboard = async (text: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success(`${label} copied to clipboard`);
+    } catch {
+      toast.error("Failed to copy to clipboard");
+    }
+  };
+
+  const regenerateSecret = () => {
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const newSecret = Array.from(
+      { length: 32 },
+      () => chars[Math.floor(Math.random() * chars.length)],
+    ).join("");
+    setApiSecret(newSecret);
+    toast.success("New secret generated — remember to save.");
+  };
+
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto space-y-6">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">ContiPay API Configuration</h1>
         <p className="text-muted-foreground">
-          Securely store your ContiPay API credentials. All data is encrypted before storage.
+          Securely store your ContiPay API credentials. All data is encrypted
+          before storage.
         </p>
       </div>
 
+      {/* Account Security */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-primary/10">
+                <Shield className="w-5 h-5 text-primary" />
+              </div>
+              <span className="font-semibold text-base">Account Security</span>
+            </div>
+            <Button variant="outline" size="sm" type="button">
+              Change Password
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* API Credentials Form */}
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <Shield className="w-5 h-5 text-primary" />
+            <Key className="w-5 h-5 text-primary" />
             <CardTitle>API Credentials</CardTitle>
           </div>
           <CardDescription>
-            Enter your ContiPay merchant credentials. These will be encrypted and stored securely.
+            Enter your ContiPay merchant credentials. These will be encrypted
+            and stored securely.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {saveMutation.isSuccess && (
-              <Alert className="bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800">
+              <Alert
+                className="bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800"
+                data-ocid="admin.save.success_state"
+              >
                 <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
                 <AlertDescription className="text-green-900 dark:text-green-100">
                   API credentials saved successfully and encrypted.
@@ -75,77 +135,122 @@ export default function AdminCredentialsPage() {
             )}
 
             {saveMutation.isError && (
-              <Alert variant="destructive">
+              <Alert variant="destructive" data-ocid="admin.save.error_state">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
                   {saveMutation.error instanceof Error
                     ? saveMutation.error.message
-                    : 'Failed to save credentials'}
+                    : "Failed to save credentials"}
                 </AlertDescription>
               </Alert>
             )}
 
+            {/* API Key */}
             <div className="space-y-2">
               <Label htmlFor="apiKey">API Key</Label>
-              <Input
-                id="apiKey"
-                type="password"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder="Enter your ContiPay API key"
-                disabled={saveMutation.isPending}
-              />
+              <div className="flex gap-2">
+                <Input
+                  id="apiKey"
+                  type="text"
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  placeholder="Enter your ContiPay API key"
+                  disabled={saveMutation.isPending}
+                  className="font-mono"
+                  data-ocid="admin.apikey.input"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => copyToClipboard(apiKey, "API Key")}
+                  disabled={!apiKey}
+                  title="Copy API Key"
+                  data-ocid="admin.apikey.copy_button"
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
 
+            {/* API Secret */}
             <div className="space-y-2">
               <Label htmlFor="apiSecret">API Secret</Label>
-              <Input
-                id="apiSecret"
-                type="password"
-                value={apiSecret}
-                onChange={(e) => setApiSecret(e.target.value)}
-                placeholder="Enter your ContiPay API secret"
-                disabled={saveMutation.isPending}
-              />
+              <div className="flex gap-2">
+                <Input
+                  id="apiSecret"
+                  type={showApiSecret ? "text" : "password"}
+                  value={apiSecret}
+                  onChange={(e) => setApiSecret(e.target.value)}
+                  placeholder="Enter your ContiPay API secret"
+                  disabled={saveMutation.isPending}
+                  className="font-mono"
+                  data-ocid="admin.apisecret.input"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setShowApiSecret((v) => !v)}
+                  title={showApiSecret ? "Hide secret" : "Show secret"}
+                  data-ocid="admin.apisecret.toggle"
+                >
+                  {showApiSecret ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={regenerateSecret}
+                  title="Regenerate secret"
+                  data-ocid="admin.apisecret.secondary_button"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => copyToClipboard(apiSecret, "API Secret")}
+                  disabled={!apiSecret}
+                  title="Copy API Secret"
+                  data-ocid="admin.apisecret.copy_button"
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
 
+            {/* SSL Certificate */}
             <div className="space-y-2">
-              <Label htmlFor="merchantId">Merchant ID</Label>
-              <Input
-                id="merchantId"
-                value={merchantId}
-                onChange={(e) => setMerchantId(e.target.value)}
-                placeholder="7BUCKS_ZIM_PLC"
-                disabled={saveMutation.isPending}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="additionalConfig">Additional Configuration (Optional)</Label>
+              <Label htmlFor="sslCertificate">
+                API SSL (Public Certificate)
+              </Label>
               <Textarea
-                id="additionalConfig"
-                value={additionalConfig}
-                onChange={(e) => setAdditionalConfig(e.target.value)}
-                placeholder="Enter any additional configuration as JSON"
-                rows={4}
+                id="sslCertificate"
+                value={sslCertificate}
+                onChange={(e) => setSslCertificate(e.target.value)}
+                placeholder="-----BEGIN CERTIFICATE----- Paste your SSL certificate content here -----END CERTIFICATE-----"
+                rows={7}
                 disabled={saveMutation.isPending}
+                className="font-mono text-sm resize-none"
+                data-ocid="admin.ssl.textarea"
               />
               <p className="text-sm text-muted-foreground">
-                Add any extra fields required by ContiPay (e.g., base URLs, endpoints)
+                Upload your public SSL certificate for secure disbursement
+                transactions
               </p>
             </div>
-
-            <Alert>
-              <Shield className="h-4 w-4" />
-              <AlertDescription>
-                Your credentials are encrypted before being stored and are never exposed in plaintext.
-              </AlertDescription>
-            </Alert>
 
             <Button
               type="submit"
               className="w-full"
-              disabled={saveMutation.isPending || !apiKey || !apiSecret || !merchantId}
+              disabled={saveMutation.isPending || !apiKey || !apiSecret}
+              data-ocid="admin.save.submit_button"
             >
               {saveMutation.isPending ? (
                 <>
@@ -153,23 +258,29 @@ export default function AdminCredentialsPage() {
                   Saving & Encrypting...
                 </>
               ) : (
-                <>
-                  <Save className="mr-2 h-4 w-4" />
-                  Save Credentials
-                </>
+                "Save Configuration"
               )}
             </Button>
           </form>
         </CardContent>
       </Card>
 
-      <Alert className="mt-6 bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
-        <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-        <AlertDescription className="text-amber-900 dark:text-amber-100">
-          <strong>Note:</strong> Once you receive the complete ContiPay API documentation with endpoint URLs and required fields, 
-          update the additional configuration section with those details.
-        </AlertDescription>
-      </Alert>
+      {/* Merchant Accounts */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-muted">
+              <Building2 className="w-5 h-5 text-muted-foreground" />
+            </div>
+            <div>
+              <p className="font-semibold text-base">Merchant Accounts</p>
+              <p className="text-sm text-muted-foreground">
+                Manage your merchant accounts and configurations
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

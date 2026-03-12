@@ -1,17 +1,17 @@
-import { Download } from 'lucide-react';
-import { Button } from './ui/button';
-import { usePwaInstallPrompt } from '../hooks/usePwaInstallPrompt';
+import { Download } from "lucide-react";
+import { usePwaInstallPrompt } from "../hooks/usePwaInstallPrompt";
+import { Button } from "./ui/button";
 
 interface PwaInstallButtonProps {
-  variant?: 'default' | 'outline' | 'ghost';
-  size?: 'default' | 'sm' | 'lg';
+  variant?: "default" | "outline" | "ghost";
+  size?: "default" | "sm" | "lg";
   className?: string;
 }
 
-export default function PwaInstallButton({ 
-  variant = 'outline', 
-  size = 'sm',
-  className = '' 
+export default function PwaInstallButton({
+  variant = "outline",
+  size = "sm",
+  className = "",
 }: PwaInstallButtonProps) {
   const { isInstallable, promptInstall } = usePwaInstallPrompt();
 

@@ -1,32 +1,32 @@
-import { useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useActor } from '../../hooks/useActor';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AlertCircle, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { Alert, AlertDescription } from "../../components/ui/alert";
+import { Button } from "../../components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '../../components/ui/dialog';
-import { Input } from '../../components/ui/input';
-import { Label } from '../../components/ui/label';
-import { Button } from '../../components/ui/button';
-import { Alert, AlertDescription } from '../../components/ui/alert';
-import { AlertCircle, Loader2 } from 'lucide-react';
+} from "../../components/ui/dialog";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
+import { useActor } from "../../hooks/useActor";
 
 export default function ProfileSetupModal() {
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const { actor } = useActor();
   const queryClient = useQueryClient();
 
   const saveMutation = useMutation({
     mutationFn: async () => {
-      if (!actor) throw new Error('Actor not available');
-      if (!name.trim()) throw new Error('Name is required');
+      if (!actor) throw new Error("Actor not available");
+      if (!name.trim()) throw new Error("Name is required");
       await actor.saveCallerUserProfile({ name: name.trim() });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['currentUserProfile'] });
+      queryClient.invalidateQueries({ queryKey: ["currentUserProfile"] });
     },
   });
 
@@ -37,7 +37,10 @@ export default function ProfileSetupModal() {
 
   return (
     <Dialog open={true}>
-      <DialogContent className="sm:max-w-md" onPointerDownOutside={(e) => e.preventDefault()}>
+      <DialogContent
+        className="sm:max-w-md"
+        onPointerDownOutside={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle>Welcome to 7 Bucks!</DialogTitle>
           <DialogDescription>
@@ -51,7 +54,7 @@ export default function ProfileSetupModal() {
               <AlertDescription>
                 {saveMutation.error instanceof Error
                   ? saveMutation.error.message
-                  : 'Failed to save profile'}
+                  : "Failed to save profile"}
               </AlertDescription>
             </Alert>
           )}
@@ -79,7 +82,7 @@ export default function ProfileSetupModal() {
                 Saving...
               </>
             ) : (
-              'Continue'
+              "Continue"
             )}
           </Button>
         </form>
